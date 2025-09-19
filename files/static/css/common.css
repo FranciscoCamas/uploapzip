@@ -1,0 +1,85 @@
+/* Estilos para botones comunes */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    margin-right: 5px;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.download-btn {
+    background-color: #2ecc71;
+}
+
+.download-btn:hover {
+    background-color: #27ae60;
+}
+
+.extract-btn {
+    background-color: #e67e22;
+}
+
+.extract-btn:hover {
+    background-color: #d35400;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Estilos para paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.pagination a, .pagination span {
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+}
+
+.pagination .current {
+    background-color: #3498db;
+    color: white;
+}
+
+.pagination .disabled {
+    color: #6c757d;
+    pointer-events: none;
+}
+
+/* Estilos para mensajes vacíos */
+.empty-message {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    margin-top: 20px;
+} 

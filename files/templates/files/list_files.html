@@ -1,0 +1,93 @@
+{% extends 'files/base.html' %}
+{% load static %}
+
+{% block title %}Archivos ZIP Subidos{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/list_files.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="files-container">
+    {% csrf_token %}
+    <div class="files-header">
+        <h1>Archivos ZIP Subidos</h1>
+        <a href="{% url 'upload_zip' %}" class="upload-link">Subir Nuevo ZIP</a>
+    </div>
+
+    {% if files %}
+    <table class="files-table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha de Subida</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+            <tr>
+                <td>{{ file.file.name }}</td>
+                <td>{{ file.uploaded_at|date:"d/m/Y H:i" }}</td>
+                <td>{{ file.description|default:"Sin descripción" }}</td>
+                <td class="action-buttons">
+                    <a href="{% url 'download_file' file.id %}" class="action-btn download-btn">Descargar</a>
+                    <a href="{% url 'list_extracted_files' file.id %}" class="action-btn view-btn">Ver Contenido</a>
+                    <button onclick="deleteZipFile({{ file.id }})" class="action-btn delete-btn">Eliminar</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">&laquo; Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Siguiente &raquo;</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <p class="empty-message">No hay archivos ZIP subidos todavía.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+function deleteZipFile(fileId) {
+    if (confirm('¿Estás seguro de que deseas eliminar este archivo ZIP?')) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        fetch(`/delete/${fileId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                window.location.reload();
+            } else {
+                alert('Error al eliminar el archivo: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al eliminar el archivo');
+        });
+    }
+}
+</script>
+{% endblock %} 

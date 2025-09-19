@@ -1,0 +1,51 @@
+.extracted-files {
+    margin: 20px 0;
+}
+
+.file-list {
+    list-style: none;
+    padding: 0;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    background-color: white;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+.file-icon {
+    margin-right: 12px;
+    color: #6c757d;
+}
+
+.file-name {
+    flex-grow: 1;
+    color: #333;
+}
+
+.file-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.file-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.file-link:hover {
+    text-decoration: underline;
+}
+
+.empty-message {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-style: italic;
+} 

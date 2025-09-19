@@ -1,0 +1,77 @@
+{% extends 'files/base.html' %}
+
+{% block title %}Archivos Extraídos{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<link rel="stylesheet" href="{% static 'css/extracted_files.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Archivos Extraídos</h1>
+<a href="{% url 'list_files' %}" class="back-link">Volver a la lista de archivos ZIP</a>
+
+{% if extracted_files %}
+    <ul class="file-list">
+        {% for file in extracted_files %}
+            <li class="file-item">
+                <span class="file-name">{{ file }}</span>
+                <button onclick="deleteExtractedFile('{{ file }}')" class="btn-delete">Eliminar</button>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if page_obj.paginator.num_pages > 1 %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Primera</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+        {% else %}
+            <span class="disabled">&laquo; Primera</span>
+            <span class="disabled">Anterior</span>
+        {% endif %}
+
+        <span class="current">
+            Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+        {% else %}
+            <span class="disabled">Siguiente</span>
+            <span class="disabled">Última &raquo;</span>
+        {% endif %}
+    </div>
+    {% endif %}
+{% else %}
+    <div class="empty-message">
+        No hay archivos extraídos en este ZIP.
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+function deleteExtractedFile(filename) {
+    if (confirm('¿Estás seguro de que deseas eliminar este archivo?')) {
+        fetch(`/delete-extracted/{{ zip_file.id }}/${filename}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                location.reload();
+            } else {
+                alert('Error al eliminar el archivo: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error al eliminar el archivo: ' + error);
+        });
+    }
+}
+{% endblock %} 

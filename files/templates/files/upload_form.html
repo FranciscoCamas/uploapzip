@@ -1,0 +1,27 @@
+{% extends 'files/base.html' %}
+
+{% block title %}Subir Archivo ZIP{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/common.css' %}">
+<link rel="stylesheet" href="{% static 'css/upload_form.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1>Subir Archivo ZIP</h1>
+<a href="{% url 'list_files' %}" class="back-link">&larr; Volver a la lista de archivos</a>
+
+<form method="post" enctype="multipart/form-data" class="upload-form">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="file">Seleccionar archivo ZIP:</label>
+        <input type="file" name="file" id="file" accept=".zip" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Descripción (opcional):</label>
+        <textarea name="description" id="description" placeholder="Ingresa una descripción para el archivo..."></textarea>
+    </div>
+    <button type="submit" class="submit-btn">Subir archivo</button>
+</form>
+{% endblock %} 
